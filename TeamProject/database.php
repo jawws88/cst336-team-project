@@ -15,7 +15,4 @@ function getDatabaseConnection() {
 }
 
 
-#testpush
-
-
 ?>

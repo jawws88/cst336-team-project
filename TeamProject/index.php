@@ -31,19 +31,15 @@
             <nav>
                 <form method="post">
                     <span id="Filter"><strong>Sort - </strong></span>
-                    <select name = "sort">
+                    <select name = "sorttype">
                         <option value="name">Name</option>
-                        <option value="nascending">-->Ascending</option>
-                        <option value="ndescending">-->Descending</option>
                         <option value="year">Year</option>
-                        <option value="yascending">-->Ascending</option>
-                        <option value="ydescending">-->Descending</option>
                         <option value="genre">Genre</option>
-                        <option value="gascending">-->Ascending</option>
-                        <option value="gdescending">-->Descending</option>
                         <option value="runtime">Runtime</option>
-                        <option value="rascending">-->Ascending</option>
-                        <option value="rdescending">-->Descending</option>
+                    </select>
+                    <select name = "sortorder">
+                        <option value="ascending">Asc</option>
+                        <option value="descending">Desc</option>
                     </select>
                     <input class="btn btn-primary btn-sm" type="submit" name="submit" value="Submit">
                     <br>
@@ -53,6 +49,8 @@
                     <strong>Genre:</strong>
                     <input type="checkbox" name="action" value="true">Action
                     <input type="checkbox" name="comedy" value="true">Comedy
+                    <strong> Year:</strong>
+                    <input type="number" name="year" width:"4" style="width: 4em" value="year">
                     <br>
                 </form>
             </nav>
@@ -67,8 +65,8 @@
                 //Table: cast - castID, movieID, actorID, characterName
                 //Table: director - directorID, firstName, lastName, dob, gender
                 
-                //Filter fields: Category(genre), Director, Filter between years maybe
-                //Sory by: Name, Year, Category(genre), Runtime
+                //Filter fields: Title, Genre, Year
+                //Sory by: Name, Year, Genre, Runtime [ASC, DESC]
                 
                 include 'database.php';
                 $dbConn = getDatabaseConnection();
@@ -90,6 +88,10 @@
                     $tempfilter[$i] = " genre = 'Comedy' ";
                     $i++;
                 }
+                if ($_POST['year'] != null){
+                    $tempfilter[$i] = " yearReleased = ".$_POST['year']." ";
+                    $i++;
+                }
                 
                 for ($j = 0; $j < count($tempfilter); $j++) #concat that filter string!
                 {
@@ -98,11 +100,11 @@
                         $dispatch = $dispatch . "WHERE";
                     }
                     $dispatch = $dispatch . $tempfilter[$j];
-                    if (strpos($tempfilter[$j], 'deviceName') && !empty($tempfilter[$j+1]))
+                    if (strpos($tempfilter[$j], 'title') && !empty($tempfilter[$j+1]))
                     {
                         $dispatch = $dispatch . " AND";
                     }
-                    else if (strpos($tempfilter[$j], 'status') && strpos($tempfilter[$j+1],'deviceType'))
+                    else if (strpos($tempfilter[$j], 'genre') && strpos($tempfilter[$j+1],'yearReleased'))
                     {
                         $dispatch = $dispatch . " AND";
                     }
@@ -115,30 +117,30 @@
                 }
                 
                 # Sort
-                if ($_POST['sort'] == "name" || $_POST['sort'] == "nascending") # Name
+                if ($_POST['sorttype'] == "name" && $_POST['sortorder'] == "ascending") # Name
                     $dispatch = $dispatch . "ORDER BY title ASC";
-                else if ($_POST['sort'] == "ndescending")
+                else if ($_POST['sorttype'] == "name" && $_POST['sortorder'] == "descending")
                     $dispatch = $dispatch . "ORDER BY title DESC";
-                else if ($_POST['sort'] == "year" || $_POST['sort'] == "yascending") # Year
+                else if ($_POST['sorttype'] == "year" && $_POST['sortorder'] == "ascending") # Year
                     $dispatch = $dispatch . "ORDER BY yearReleased ASC";
-                else if ($_POST['sort'] == "ydescending")
+                else if ($_POST['sorttype'] == "year" && $_POST['sortorder'] == "descending")
                     $dispatch = $dispatch . "ORDER BY yearReleased DESC";
-                else if ($_POST['sort'] == "genre" || $_POST['sort'] == "gascending") # Genre
+                else if ($_POST['sorttype'] == "genre" && $_POST['sortorder'] == "ascending") # Genre
                     $dispatch = $dispatch . "ORDER BY genre ASC";
-                else if ($_POST['sort'] == "gdescending")
+                else if ($_POST['sorttype'] == "genre" && $_POST['sortorder'] == "descending")
                     $dispatch = $dispatch . "ORDER BY genre DESC";
-                else if ($_POST['sort'] == "runtime" || $_POST['sort'] == "rascending") # Runtime
+                else if ($_POST['sorttype'] == "runtime" && $_POST['sortorder'] == "ascending") # Runtime
                     $dispatch = $dispatch . "ORDER BY runtime ASC";
-                else if ($_POST['sort'] == "rdescending")
+                else if ($_POST['sorttype'] == "runtime" && $_POST['sortorder'] == "descending")
                     $dispatch = $dispatch . "ORDER BY runtime DESC";
                 
                 
                 $dbData = $dbConn->query($dispatch);
                 $dbArray = $dbData->fetchAll();
-                echo $dispatch."<br>";
+                #echo $dispatch."<br>";
+                echo "<br>";
                 #print_r($_SESSION);
-                ?>
-                <strong>Title</strong> (Year) Genre <i>Runtime</i><br> <?php
+                /*?><strong>Title</strong> (Year) Genre <i>Runtime</i><br> <?php
                 for ($i = 0; $i < sizeof($dbArray); $i++)
                 {
                     echo '<span class="movielist">';
@@ -151,32 +153,30 @@
                     echo '<form><button class="btn btn-info" name="addToCart" value="'.$dbArray[$i]['title'].'">Add to Cart</button></form>';
                     echo "<br>";
                   
-                }
-            ?>  
-            
-            <!--This is just a foreach version of the above loop-->
-            <?php
-            echo "<table align='center' id=\"t1\">
-            <tr>
-            <thead>
-            <th>Title </th>
- 	        <th>Year </th>
-         	<th>Genre </th>
-         	<th>Runtime </th>
-         	</thead>
-            </tr>";
-                foreach($dbArray as $result) {
-                echo "<tr>";
-                echo "<strong><td class='movielist'><a href=\"info.php? title=".$result['title']. "&id=" .$result['movieID']."&yearReleased=".
-                      $result['yearReleased']."&genre=".$result['genre']."&runtime=".$result['runtime']."\">" . $result['title'] ."</a></td></strong>";
-                echo "<td>".$result['yearReleased']."</td>";
-                echo "<td>".$result['genre']."</td>";
-                echo "<td>".$result['runtime']." min</td>";
-                echo '<td><form><button class="btn btn-info btn-sm" name="addToCart" value="'.$result['title'].'">Add to Cart</button></form></td>';
-                }
+                }*/
                 
-                echo "</table>";
-            ?>
+                //This is just a foreach version of the above loop
+                echo "<table align='center' id=\"t1\">
+                <tr>
+                <thead>
+                <th>Title </th>
+     	        <th>Year </th>
+             	<th>Genre </th>
+             	<th>Runtime </th>
+             	</thead>
+                </tr>";
+                    foreach($dbArray as $result) {
+                    echo "<tr>";
+                    echo "<strong><td class='movielist'><a href=\"info.php? title=".$result['title']. "&id=" .$result['movieID']."&yearReleased=".
+                          $result['yearReleased']."&genre=".$result['genre']."&runtime=".$result['runtime']."\">" . $result['title'] ."</a></td></strong>";
+                    echo "<td>".$result['yearReleased']."</td>";
+                    echo "<td>".$result['genre']."</td>";
+                    echo "<td>".$result['runtime']." min</td>";
+                    echo '<td><form><button class="btn btn-info btn-sm" name="addToCart" value="'.$result['title'].'">Add to Cart</button></form></td>';
+                    }
+                    
+                    echo "</table>";
+                ?>
             
             
             

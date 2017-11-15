@@ -14,7 +14,7 @@
     ?>
     <body>
         <div class="container text-center">
-            <h1>Your Shopping Cart</h1>
+            <h1>Brokebuster: Shopping Cart</h1>
             <hr id="line">
             <?php
                 if(count($cartItems) == 0){

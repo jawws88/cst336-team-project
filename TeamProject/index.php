@@ -161,8 +161,6 @@
                 <thead>
                 <th>Title </th>
      	        <th>Year </th>
-             	<th>Genre </th>
-             	<th>Runtime </th>
              	</thead>
                 </tr>";
                     foreach($dbArray as $result) {
@@ -170,8 +168,8 @@
                     echo "<strong><td class='movielist'><a href=\"info.php? title=".$result['title']. "&id=" .$result['movieID']."&yearReleased=".
                           $result['yearReleased']."&genre=".$result['genre']."&runtime=".$result['runtime']."\">" . $result['title'] ."</a></td></strong>";
                     echo "<td>".$result['yearReleased']."</td>";
-                    echo "<td>".$result['genre']."</td>";
-                    echo "<td>".$result['runtime']." min</td>";
+                    //echo "<td>".$result['genre']."</td>";
+                    //echo "<td>".$result['runtime']." min</td>";
                     echo '<td><form><button class="btn btn-info btn-sm" name="addToCart" value="'.$result['title'].'">Add to Cart</button></form></td>';
                     }
                     

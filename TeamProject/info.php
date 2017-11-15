@@ -22,9 +22,6 @@ $result_image_source = $newhtml->find('img', 0)->src;
             <h3>Year Released: <?php echo $_GET['yearReleased']; ?></h3>
             <h3>Genre: <?php echo $_GET['genre']; ?></h3>
             <h3>Runtime: <?php echo $_GET['runtime']; ?> minutes</h3>
-            <h3>Director: </h3>
-            <h3>Actor: </h3>
-            <h3>Cast: </h3>
             	
             
             

@@ -1,6 +1,7 @@
 body {
-    background-color: #f9f9f9;
-    font-family: futura; 
+    background-color: #F9F9F9;
+    /*font-family: futura; */
+    font-family: Helvetica;
 }
 
 #container {
@@ -12,4 +13,9 @@ body {
 	border: 0;
     height: 1px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+.movielist {
+    border-style: solid;
+    border-width: 2px;
 }

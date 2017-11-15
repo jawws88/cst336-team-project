@@ -2,4 +2,5 @@ Work on our stuff here and when we want to push our progress
 Copy the current state of the whole project into your own cloud9 workspace and push it from there using your github account
 Since we work here we shouldnt have any issues with committing previous versions
 
-Once you've copied and pushed once, you dont have to keep erasing and swapping the phpmyadmin folder between cloud9's since it takes forever to upload
+Once you've copied and pushed once, you dont have to keep erasing and swapping the phpmyadmin folder between cloud9's since it 
+takes forever to upload

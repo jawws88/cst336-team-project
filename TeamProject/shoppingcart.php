@@ -2,7 +2,9 @@
 <html>
     <head>
         <title>Brokebuster: Shopping Cart</title>
-        <link rel="stylesheet" href="css/style.css" type="text/css" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <?php
         if(!isset($_SESSION['cart'])){
@@ -11,7 +13,7 @@
         $cartItems = $_SESSION['cart'];
     ?>
     <body>
-        <div id="container">
+        <div class="container text-center">
             <h1>Your Shopping Cart</h1>
             <hr id="line">
             <?php
@@ -20,13 +22,13 @@
                 }else{
                     
                     foreach($cartItems as $item){
-                        echo $item.'<br>';
+                        echo "<span id='item'>".$item.'</span><br>';
                     }
                 }
             ?>
             <form method="post">
-                <button formaction="clear.php" type="submit">Clear Cart</button><br>
-                <button formaction="index.php" type="submit">Keep Shopping</button>
+                <button class="btn btn-warning" formaction="clear.php" type="submit">Clear Cart</button><br>
+                <button class="btn btn-primary" formaction="index.php" type="submit">Keep Shopping</button>
             </form>
         </div>
     </body>

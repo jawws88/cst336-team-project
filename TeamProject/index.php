@@ -26,10 +26,10 @@
     <body>
         <div class="container text-center">
             <h1>Brokebuster</h1>
-            <form><button formaction="shoppingcart.php">Go to Shopping Cart</button></form>
+            <form><button class="btn btn-primary" formaction="shoppingcart.php">Go to Shopping Cart</button></form>
             <hr id="line">
             <nav>
-                <form method="post">         <!-- temporary, will sort by pressing name on column later -->
+                <form method="post">
                     <span id="Filter"><strong>Sort - </strong></span>
                     <select name = "sort">
                         <option value="name">Name</option>
@@ -45,7 +45,7 @@
                         <option value="rascending">-->Ascending</option>
                         <option value="rdescending">-->Descending</option>
                     </select>
-                    <input type="submit" name="submit" value="Submit">
+                    <input class="btn btn-primary btn-sm" type="submit" name="submit" value="Submit">
                     <br>
                         
                     <strong><span id="Filter">Filter - </span> Name:</strong>  <input type="text" name="typedtext" placeholder="Movie Name" value="<?=$_GET['typedtext']?>"/>
@@ -137,17 +137,18 @@
                 $dbArray = $dbData->fetchAll();
                 echo $dispatch."<br>";
                 #print_r($_SESSION);
-                ?><strong>Title</strong> (Year) Genre <i>Runtime</i><br> <?php
+                ?>
+                <strong>Title</strong> (Year) Genre <i>Runtime</i><br> <?php
                 for ($i = 0; $i < sizeof($dbArray); $i++)
                 {
                     echo '<span class="movielist">';
-                    echo "<a href=\"info.php?name=".$dbArray[$i]['title'];
-                    echo "<strong>".$dbArray[$i]['title']."</strong> ";
-                    echo "(".$dbArray[$i]['yearReleased'].") ";
+                    echo "<strong><td class='movielist'><a href=\"info.php?name=".$dbArray[$i]['title']. "&id=" .$dbArray[$i]['movieID']."\">" . $dbArray[$i]['title'] ."</a></td></strong>";
+                    //echo "<strong>".$dbArray[$i]['title']."</strong> ";
+                    echo " (".$dbArray[$i]['yearReleased'].") ";
                     echo $dbArray[$i]['genre']." ";
                     echo "<i>".$dbArray[$i]['runtime']."min</i> ";
-                    echo '<form><button name="addToCart" value="'.$dbArray[$i]['title'].'">Add to Cart</button></form>';
                     echo '</span>';
+                    echo '<form><button class="btn btn-info" name="addToCart" value="'.$dbArray[$i]['title'].'">Add to Cart</button></form>';
                     echo "<br>";
                   
                 }
@@ -155,17 +156,26 @@
             
             <!--This is just a foreach version of the above loop-->
             <?php
+            echo "<table align='center' id=\"t1\">
+            <tr>
+            <thead>
+            <th>Title </th>
+ 	        <th>Year </th>
+         	<th>Genre </th>
+         	<th>Runtime </th>
+         	</thead>
+            </tr>";
                 foreach($dbArray as $result) {
-                    echo '<span>';
-                    echo "<a href=\"info.php?name=".$result['title'];
-                    echo '<strong>'.$result['title']."</strong> ";
-                    echo "(".$result['yearReleased'].") ";
-                    echo $result['genre']." ";
-                    echo '<i>'.$result['runtime']."min</i> ";
-                    echo '<form><button name="addToCart" value="'.$result['title'].'">Add to Cart</button></form>';
-                    echo '</span>';
-                    echo "<br>";
+                echo "<tr>";
+                echo "<strong><td class='movielist'><a href=\"info.php? title=".$result['title']. "&id=" .$result['movieID']."&yearReleased=".
+                      $result['yearReleased']."&genre=".$result['genre']."&runtime=".$result['runtime']."\">" . $result['title'] ."</a></td></strong>";
+                echo "<td>".$result['yearReleased']."</td>";
+                echo "<td>".$result['genre']."</td>";
+                echo "<td>".$result['runtime']." min</td>";
+                echo '<td><form><button class="btn btn-info btn-sm" name="addToCart" value="'.$result['title'].'">Add to Cart</button></form></td>';
                 }
+                
+                echo "</table>";
             ?>
             
             
